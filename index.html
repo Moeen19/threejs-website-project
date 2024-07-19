@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Threejs Website</title>
+    <link rel="stylesheet" href="./output.css" />
+    <link rel="stylesheet" href="input.css" />
+  </head>
+  <body class="p-4 relative">
+    <div class="text-white px-3">
+      <h1 class="text-[30px] text-center">Welcome to my 3JS Website!</h1>
+
+      <nav class="flex w-fit mx-auto gap-[8px]">
+        <a href="./about.html">
+          <p
+            class="transition duration-300 ease-out hover:text-[red] cursor-pointer"
+          >
+            About
+          </p>
+        </a>
+        <p
+          class="hover:text-[red] transition duration-300 ease-out cursor-pointer"
+        >
+          Contact
+        </p>
+        <p
+          class="hover:text-[red] transition duration-300 ease-out cursor-pointer"
+        >
+          More
+        </p>
+      </nav>
+
+      <div class="text-white text-[20px] fixed bottom-20 left-[40%]">
+        <h1>Clig and Drag to move around!</h1>
+      </div>
+    </div>
+
+    <canvas id="WebGl" class="fixed top-0 -z-10 left-0"></canvas>
+
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>
