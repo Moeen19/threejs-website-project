@@ -26,13 +26,14 @@ camera.position.z = 10;
 // renderer
 const renderer = new THREE.WebGLRenderer({ canvas });
 renderer.setSize(sizes.width, sizes.height);
+renderer.setPixelRatio(2)
 
 // controls
 // const controls = new OrbitControls(camera, renderer.domElement);
 
 
 // plane geo
-const planeGeo = new THREE.PlaneGeometry(40, 40, 35, 35);
+const planeGeo = new THREE.PlaneGeometry(40, 40, 28, 28);
 
 // plane mat
 const planeMat = new THREE.MeshStandardMaterial({
@@ -47,10 +48,27 @@ scene.add(planeMesh);
 
 const { array } = planeMesh.geometry.attributes.position;
 
-for (let i = 0; i < array.length; i += 3) {
+
+// original position
+planeMesh.geometry.attributes.position.originalPosition = planeMesh.geometry.attributes.position.array
+
+// randomValues
+let randomValues = []
+
+for (let i = 0; i < array.length; i++) {
+ if(i % 3 === 0) {
+  const x = array[i]
+  const y = array[i + 1]
   const z = array[i + 2];
+  array[i] = x + (Math.random() - 0.5)
+  array[i + 1] = y + (Math.random() - 0.5)
   array[i + 2] = z + Math.random();
+ }
+ randomValues.push(Math.random() - 0.5)
 }
+
+// randomValues Attribute
+planeMesh.geometry.attributes.position.randomValues = randomValues
 
 // raycaster
 const raycaster = new THREE.Raycaster();
@@ -82,12 +100,29 @@ planeMesh.geometry.setAttribute(
   new THREE.Float32BufferAttribute(new Float32Array(colors), 3)
 );
 
+// frames
+let frames = 0
+
 // animate
 function animate() {
   renderer.render(scene, camera);
   window.requestAnimationFrame(animate);
   raycaster.setFromCamera(mouseCords, camera);
   const intersects = raycaster.intersectObject(planeMesh);
+  frames += 0.01
+
+  const { randomValues, array, originalPosition } = planeMesh.geometry.attributes.position
+
+  for(let i = 0; i < array.length; i += 3) {
+    //x
+    array[i] = originalPosition[i] + Math.cos(frames + randomValues[i]) * 0.007
+
+    // y
+    array[i + 1] = originalPosition[i + 1] + Math.sin(frames + randomValues[i + 1]) * 0.007
+  }
+
+  planeMesh.geometry.attributes.position.needsUpdate = true
+
   if (intersects.length > 0) {
     const { color } = intersects[0].object.geometry.attributes;
 
