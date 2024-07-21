@@ -32,9 +32,9 @@ const earthGroup = new THREE.Group()
 scene.add(earthGroup)
 
 // textures
-const earthTexture = new THREE.TextureLoader().load('/static/images/2k_earth_daymap.jpg')
-const lightsTexture = new THREE.TextureLoader().load('/static/images/03_earthlights1k.jpg')
-const cloudsTexture = new THREE.TextureLoader().load('/static/images/05_earthcloudmaptrans.jpg')
+const earthTexture = new THREE.TextureLoader().load('/textures/2k_earth_daymap.jpg')
+const lightsTexture = new THREE.TextureLoader().load('/textures/03_earthlights1k.jpg')
+const cloudsTexture = new THREE.TextureLoader().load('/textures/05_earthcloudmaptrans.jpg')
 
 // earth Geo
 const earthGeo = new THREE.IcosahedronGeometry(1, 12)
