@@ -195,6 +195,8 @@ window.addEventListener("resize", () => {
   renderer.setSize(sizes.width, sizes.height);
 });
 
+
+// mouse movement
 addEventListener("mousemove", (event) => {
   mouseCords.x = (event.clientX / innerWidth) * 2 - 1;
   mouseCords.y = -(event.clientY / innerHeight) * 2 + 1;
