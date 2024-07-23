@@ -18,10 +18,11 @@ export default defineConfig({
     viteStaticCopy({
       targets: [
         {
-          src: 'public/textures/**/*',
-          dest: 'textures'
+          src: 'public/assets/wolf/**/*',
+          dest: 'assets/wolf'
         }
       ]
     })
-  ]
+  ],
+  assetsInclude: ['**/*.hdr']
 });
