@@ -47,33 +47,6 @@ directionalLight.shadow.mapSize.height = 2048
 directionalLight.castShadow = true;
 scene.add(directionalLight);
 
-const directionalLightHelper = new THREE.DirectionalLightHelper(directionalLight)
-scene.add(directionalLightHelper)
-
-// const pointLight = new THREE.PointLight(0xffffff, 100)
-// pointLight.position.z = 1
-// pointLight.position.y = 3
-
-// const pointLight2 = new THREE.PointLight(0xffffff, 100)
-// pointLight2.position.z = -4
-// pointLight2.position.y = 3
-
-// const pointLight3 = new THREE.PointLight(0xffffff, 100)
-// pointLight3.position.z = 1
-// pointLight3.position.y = 3
-// pointLight3.position.x = 4
-
-// const pointLight4 = new THREE.PointLight(0xffffff, 100)
-// pointLight4.position.z = 1
-// pointLight4.position.y = 3
-// pointLight4.position.x = -4
-// const helper = new THREE.PointLightHelper(pointLight4)
-// scene.add(helper)
-// scene.add(pointLight)
-// scene.add(pointLight2)
-// scene.add(pointLight3)
-// scene.add(pointLight4)
-
 // gltf initialize
 const gltfLoader = new GLTFLoader();
 
