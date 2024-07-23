@@ -96,6 +96,8 @@ rgbeLoader.load(HDRfile, function (texture) {
   });
 });
 
+console.log(model)
+
 // controls
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
