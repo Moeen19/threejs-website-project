@@ -29,7 +29,9 @@ const camera = new THREE.PerspectiveCamera(
   0.1,
   1000
 );
-camera.position.z = 2.5;
+camera.position.z = -3;
+camera.position.x = -2
+camera.position.y = 1.8
 
 // renderer
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
