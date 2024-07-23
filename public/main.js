@@ -10,6 +10,7 @@ const walkBtn = document.getElementById("Walk");
 const idleBtn = document.getElementById("Idle");
 const sitBtn = document.getElementById("Sit");
 const creepBtn = document.getElementById("Creep");
+let loaded = false;
 
 console.log(loader)
 
@@ -85,9 +86,10 @@ rgbeLoader.load(HDRfile, function (texture) {
 
     mixer = new THREE.AnimationMixer(model);
     scene.add(model);
-    
+
     loader.style.opacity = 0
     canvas.style.opacity = 100
+    loaded = true
   });
 });
 
@@ -110,21 +112,23 @@ function selectAnimation(No) {
 function animate() {
   renderer.render(scene, camera);
   controls.update();
-  runBtn.addEventListener("click", () => {
-    selectAnimation(0);
-  });
-  walkBtn.addEventListener("click", () => {
-    selectAnimation(1);
-  });
-  creepBtn.addEventListener("click", () => {
-    selectAnimation(2);
-  });
-  idleBtn.addEventListener("click", () => {
-    selectAnimation(3);
-  });
-  sitBtn.addEventListener("click", () => {
-    selectAnimation(4);
-  });
+  if(loaded) {
+    runBtn.addEventListener("click", () => {
+      selectAnimation(0);
+    });
+    walkBtn.addEventListener("click", () => {
+      selectAnimation(1);
+    });
+    creepBtn.addEventListener("click", () => {
+      selectAnimation(2);
+    });
+    idleBtn.addEventListener("click", () => {
+      selectAnimation(3);
+    });
+    sitBtn.addEventListener("click", () => {
+      selectAnimation(4);
+    });
+  }
   if (mixer) {
     mixer.update(0.02);
   }
