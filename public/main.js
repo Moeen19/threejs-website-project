@@ -17,7 +17,7 @@ setTimeout(() => {
   console.log('k')
   loader.style.opacity = 0
   canvas.style.opacity = 100
-}, 25000)
+}, 35000)
 
 //canvas
 const canvas = document.getElementById("WebGl");
