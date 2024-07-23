@@ -4,11 +4,20 @@ import { GLTFLoader } from "three/examples/jsm/Addons.js";
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
 import HDRfile from "./assets/wolf/MR_INT-005_WhiteNeons_NAD.hdr";
 
+const loader = document.getElementById("loader")
 const runBtn = document.getElementById("Run");
 const walkBtn = document.getElementById("Walk");
 const idleBtn = document.getElementById("Idle");
 const sitBtn = document.getElementById("Sit");
 const creepBtn = document.getElementById("Creep");
+
+console.log(loader)
+
+setTimeout(() => {
+  console.log('k')
+  loader.style.opacity = 0
+  canvas.style.opacity = 100
+}, 5000)
 
 //canvas
 const canvas = document.getElementById("WebGl");
