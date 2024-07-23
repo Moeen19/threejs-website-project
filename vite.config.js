@@ -8,9 +8,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: './public/index.html',
-        about: './public/about.html',
-        contact: './public/contact.html',
-        more: './public/more.html',
+        // other entries
       },
     },
   },
