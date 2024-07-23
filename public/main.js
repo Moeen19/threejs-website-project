@@ -32,21 +32,23 @@ const camera = new THREE.PerspectiveCamera(
 camera.position.z = 2.5;
 
 // renderer
-const renderer = new THREE.WebGLRenderer({ canvas });
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
 renderer.setSize(sizes.width, sizes.height);
-renderer.setPixelRatio(2);
+renderer.setPixelRatio(window.devicePixelRatio);
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 8;
 
-// const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-// directionalLight.position.set(-2, 1, 1.5);
-// directionalLight.castShadow = true;
-// scene.add(directionalLight);
+const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+directionalLight.position.set(0.7, 5, 5);
+directionalLight.shadow.mapSize.width = 2048
+directionalLight.shadow.mapSize.height = 2048
+directionalLight.castShadow = true;
+scene.add(directionalLight);
 
-// const directionalLightHelper = new THREE.DirectionalLightHelper(directionalLight)
-// scene.add(directionalLightHelper)
+const directionalLightHelper = new THREE.DirectionalLightHelper(directionalLight)
+scene.add(directionalLightHelper)
 
 // const pointLight = new THREE.PointLight(0xffffff, 100)
 // pointLight.position.z = 1
@@ -91,6 +93,11 @@ rgbeLoader.load(HDRfile, function (texture) {
     model = gltf.scene;
     animations = gltf.animations;
 
+    model.traverse((child) => {
+      if (child.isMesh) {
+        child.castShadow = true;
+      }
+    });
     mixer = new THREE.AnimationMixer(model);
     scene.add(model);
   });
