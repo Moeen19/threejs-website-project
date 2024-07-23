@@ -90,7 +90,6 @@ rgbeLoader.load(HDRfile, function (texture) {
   gltfLoader.load("./assets/wolf/output.glb", function (gltf) {
     model = gltf.scene;
     animations = gltf.animations;
-    console.log(model)
 
     mixer = new THREE.AnimationMixer(model);
     scene.add(model);
