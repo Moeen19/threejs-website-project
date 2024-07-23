@@ -13,11 +13,10 @@ const creepBtn = document.getElementById("Creep");
 
 console.log(loader)
 
-setTimeout(() => {
-  console.log('k')
-  loader.style.opacity = 0
-  canvas.style.opacity = 100
-}, 35000)
+// setTimeout(() => {
+//   console.log('k')
+ 
+// }, 35000)
 
 //canvas
 const canvas = document.getElementById("WebGl");
@@ -83,8 +82,12 @@ rgbeLoader.load(HDRfile, function (texture) {
         child.receiveShadow = true;
       }
     });
+
     mixer = new THREE.AnimationMixer(model);
     scene.add(model);
+    
+    loader.style.opacity = 0
+    canvas.style.opacity = 100
   });
 });
 
