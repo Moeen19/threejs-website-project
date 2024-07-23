@@ -7,7 +7,7 @@
     "dev": "vite",
     "devTail": "npx tailwindcss -i ./input.css -o ./output.css --watch",
     "build": "vite build",
-    "postbuild": "cp -r public/textures dist/textures",
+    "postbuild": "cp -r public/assets/wolf dist/assets/wolf",
     "preview": "vite preview"
   },
   "devDependencies": {
