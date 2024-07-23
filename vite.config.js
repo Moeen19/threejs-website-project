@@ -1,6 +1,5 @@
 import { defineConfig } from 'vite';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
-import path from 'path';
 
 export default defineConfig({
   root: 'public',
@@ -8,10 +7,10 @@ export default defineConfig({
     outDir: '../dist',
     rollupOptions: {
       input: {
-        main: path.resolve(__dirname, 'public/index.html'),
-        about: path.resolve(__dirname, 'public/about.html'),
-        contact: path.resolve(__dirname, 'public/contact.html'),
-        more: path.resolve(__dirname, 'public/more.html'),
+        main: './public/index.html',
+        about: './public/about.html',
+        contact: './public/contact.html',
+        more: './public/more.html',
       },
     },
   },
@@ -19,7 +18,7 @@ export default defineConfig({
     viteStaticCopy({
       targets: [
         {
-          src: path.resolve(__dirname, 'public/assets/wolf/**/*'),
+          src: 'public/assets/wolf/**/*',
           dest: 'assets/wolf'
         }
       ]
