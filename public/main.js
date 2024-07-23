@@ -96,6 +96,7 @@ rgbeLoader.load(HDRfile, function (texture) {
     model.traverse((child) => {
       if (child.isMesh) {
         child.castShadow = true;
+        child.receiveShadow = true;
       }
     });
     mixer = new THREE.AnimationMixer(model);
