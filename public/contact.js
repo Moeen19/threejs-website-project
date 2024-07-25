@@ -10,12 +10,14 @@ const sizes = {
   height: window.innerHeight,
 };
 
-// texture
-const bgTexture = new THREE.TextureLoader().load("./textures/dark_texture.jpg")
+// mouseCords
+const mouseCords = {
+  x: undefined,
+  y: undefined,
+};
 
 // scene
 const scene = new THREE.Scene();
-
 
 // camera
 const camera = new THREE.PerspectiveCamera(
@@ -24,101 +26,118 @@ const camera = new THREE.PerspectiveCamera(
   0.1,
   1000
 );
-camera.position.z = 3.5
+camera.position.z = 2;
 
 // renderer
-const renderer = new THREE.WebGLRenderer({ canvas });
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
 renderer.setSize(sizes.width, sizes.height);
-renderer.setPixelRatio(2)
+renderer.setClearColor(0xffffff);
 
 // controls
 // const controls = new OrbitControls(camera, renderer.domElement)
-// controls.enableZoom = false
-// controls.enablePan = false
 
-// IcoGeo
-const icoGeo = new THREE.IcosahedronGeometry(1.2, 2)
+// particlesGeo
+const particlesGeo = new THREE.BufferGeometry();
+const particlesCount = 15000;
+const positionArray = new Float32Array(particlesCount * 3);
+const originalPosition = new Float32Array(particlesCount * 3);
 
-// icoMat
-const icoMat = new THREE.MeshStandardMaterial({
-    color: 0xffffff,
-    flatShading: true
-})
+let gridWidth = 150;
+let gridHeight = 100;
+let spacing = 0.05;
+let index = 0;
 
-// icoMesh
-const icoMesh = new THREE.Mesh(icoGeo, icoMat)
-scene.add(icoMesh)
+for (let i = 0; i < gridHeight; i++) {
+  for (let j = 0; j < gridWidth; j++) {
+    if (index >= particlesCount * 3) break;
+    positionArray[index] = j * spacing - (gridWidth * spacing) / 2;
+    positionArray[index + 1] = i * spacing - (gridHeight * spacing) / 2;
+    positionArray[index + 2] = 0;
 
-// IcoGeo
-const icoGeo2 = new THREE.IcosahedronGeometry(1.2, 2)
+    originalPosition[index] = j * spacing - (gridWidth * spacing) / 2;
+    originalPosition[index + 1] = i * spacing - (gridHeight * spacing) / 2;
+    originalPosition[index + 2] = 0;
 
-// icoMat
-const icoMat2 = new THREE.MeshStandardMaterial({
-    color: 0xffffff,
-    flatShading: true
-})
+    index += 3;
+  }
+}
 
-// icoMesh2
-const icoMesh2 = new THREE.Mesh(icoGeo2, icoMat2)
-icoMesh2.position.x = 3
-scene.add(icoMesh2)
+particlesGeo.setAttribute(
+  "position",
+  new THREE.BufferAttribute(positionArray, 3)
+);
+particlesGeo.setAttribute(
+  "originalPosition",
+  new THREE.BufferAttribute(originalPosition, 3)
+);
 
-// IcoGeo3
-const icoGeo3 = new THREE.IcosahedronGeometry(1.2, 2)
+const particlesMat = new THREE.PointsMaterial({
+  color: 0x000000,
+  size: 0.01,
+});
 
-// icoMat3
-const icoMat3 = new THREE.MeshStandardMaterial({
-    color: 0xffffff,
-    flatShading: true
-})
+const particlesMesh = new THREE.Points(particlesGeo, particlesMat);
+scene.add(particlesMesh);
 
-// icoMesh3
-const icoMesh3 = new THREE.Mesh(icoGeo3, icoMat3)
-icoMesh3.position.x = -3
-scene.add(icoMesh3)
+// animateParticles
+const animateParticles = () => {
+  const position = particlesMesh.geometry.attributes.position.array;
+  const originalPositionsArr =
+    particlesMesh.geometry.attributes.originalPosition.array;
+  let force = 0.5;
+  let radius = 0.50;
+  let attractionStrength = 0.1;
 
-// wireMat
-const wireMat = new THREE.MeshBasicMaterial({
-    color: 0xffffff,
-    wireframe: true
-})
+  const mouseX = (mouseCords.x * (gridWidth * spacing)) / 2
+  const mouseY = (mouseCords.y * (gridWidth * spacing)) / 2
 
-// wire Mesh
-const wireMesh = new THREE.Mesh(icoGeo, wireMat)
-const wireMesh2 = new THREE.Mesh(icoGeo, wireMat)
-const wireMesh3 = new THREE.Mesh(icoGeo, wireMat)
-wireMesh.scale.setScalar(1.001)
-wireMesh2.scale.setScalar(1.001)
-wireMesh3.scale.setScalar(1.001)
-icoMesh.add(wireMesh)
-icoMesh2.add(wireMesh2)
-icoMesh3.add(wireMesh3)
+  if (mouseCords.x !== undefined && mouseCords.y !== undefined) {
+    for (let i = 0; i < position.length; i += 3) {
+      const x = position[i];
+      const y = position[i + 1];
 
-// lights
-const hemiLight = new THREE.HemisphereLight(0x0099ff, 0xaa5500)
-scene.add(hemiLight)
+      const dx = x - mouseX;
+      const dy = y - mouseY;
+      const distance = Math.sqrt(dx * dx + dy * dy)
+      
+      const angle = Math.atan2(dy, dx)
+
+      if(distance < radius) {
+        const forceX = force * (radius - distance) * Math.cos(angle)
+        const forceY = force * (radius - distance) * Math.sin(angle)
+
+        position[i] += forceX 
+        position[i + 1] += forceY
+      } else {
+        position[i] += (originalPositionsArr[i] - x) * attractionStrength
+        position[i + 1] += (originalPositionsArr[i + 1] - y) * attractionStrength
+      }
+    }
+  }
+  particlesMesh.geometry.attributes.position.needsUpdate = true;
+};
 
 // animate
-function animate(t = 0) {
+function animate() {
   renderer.render(scene, camera);
-  icoMesh.scale.setScalar(Math.cos((t * 0.001) + 1.0))
-  icoMesh.rotation.y += 0.06
-
-  icoMesh2.scale.setScalar(Math.cos((t * 0.001) - 1.0))
-  icoMesh2.rotation.y += 0.06
-
-  icoMesh3.scale.setScalar(Math.cos((t * 0.001) - 1.0))
-  icoMesh3.rotation.y += 0.06
   requestAnimationFrame(animate);
+  animateParticles()
   // controls.update()
 }
 
-window.addEventListener("resize", () => {
+animate();
+
+addEventListener("resize", () => {
+  // update sizes
   sizes.width = window.innerWidth;
   sizes.height = window.innerHeight;
-  camera.aspect = sizes.width / sizes.height;
-  camera.updateProjectionMatrix();
+
+  // rerender
   renderer.setSize(sizes.width, sizes.height);
+  camera.updateProjectionMatrix();
 });
 
-animate();
+addEventListener("mousemove", (e) => {
+  mouseCords.x = (e.clientX / innerWidth) * 2 - 1;
+  mouseCords.y = -(e.clientY / innerHeight) * 2 + 1;
+});
