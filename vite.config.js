@@ -8,8 +8,10 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: './public/index.html',
-        // other entries
-      },
+        contact: './public/contact.html',
+        about: './public/about.html',
+        more: './public/more.html',
+      }
     },
   },
   plugins: [
