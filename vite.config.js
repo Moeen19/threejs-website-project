@@ -18,8 +18,8 @@ export default defineConfig({
     viteStaticCopy({
       targets: [
         {
-          src: 'public/assets/wolf/**/*',
-          dest: 'assets/wolf'
+          src: 'public/assets/**/*',
+          dest: 'assets/'
         }
       ]
     })
